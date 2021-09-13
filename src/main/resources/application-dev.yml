@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/photo_app?useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=true&useSSL=false
+    username: pawan
+    password: pawan132
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+server:
+  servlet:
+    context-path: /mobile-app-ws
+  port: 5555
+
+tokenSecret: jf9i4jgu83nfl0
