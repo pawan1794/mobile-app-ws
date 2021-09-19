@@ -62,8 +62,29 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
         UserDto userDto = userService.getUser(username);
 
-        response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
-        response.addHeader("UserId", userDto.getUserId());
-        response.addHeader("Expires", new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME).toString());
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("{");
+        sb.append("\"userId\"");
+        sb.append(":");
+        sb.append("\""+ userDto.getUserId()+"\"");
+        sb.append(",");
+        sb.append("\n");
+        sb.append("\""+SecurityConstants.TOKEN+"\"");
+        sb.append(":");
+        sb.append("\""+SecurityConstants.TOKEN_PREFIX+token+"\"");
+        sb.append(",");
+        sb.append("\"expireBy\"");
+        sb.append(":");
+        sb.append("\""+new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME).toString()+"\"");
+        sb.append("}");
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(sb.toString());
+
+//        response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+//        response.addHeader("UserId", userDto.getUserId());
+//        response.addHeader("Expires", new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME).toString());
     }
 }

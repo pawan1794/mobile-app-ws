@@ -42,7 +42,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     public AuthenticationFilter getAuthenticationFilter() throws Exception {
         System.out.println("WebSecurity getAuthenticationFilter");
         AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
-        filter.setFilterProcessesUrl("/users/login");
+        filter.setFilterProcessesUrl("/auth/token");
         return filter;
     }
 }
