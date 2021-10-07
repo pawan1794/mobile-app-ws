@@ -34,7 +34,7 @@ public class UserController {
     AddressService addressService;
 
     //1
-    @GetMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "1") int page,
                                    @RequestParam(value = "limit", defaultValue = "25") int limit) {
 
@@ -52,7 +52,7 @@ public class UserController {
         return returnValues;
     }
     //2
-    @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public UserRest getUser(@PathVariable String id) {
 
         UserRest returnValue = new UserRest();
@@ -65,8 +65,8 @@ public class UserController {
         return returnValue;
     }
     //3
-    @PostMapping(consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) throws Exception {
         UserRest returnValue = new UserRest();
         // UserDto userDto = new UserDto();
@@ -79,8 +79,8 @@ public class UserController {
         return returnValue;
     }
     //4
-    @PutMapping(path = "/{id}", consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(path = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public UserRest updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) throws Exception {
         UserRest returnValue = new UserRest();
 
@@ -91,7 +91,7 @@ public class UserController {
         return returnValue;
     }
     //5
-    @DeleteMapping(path = "/{id}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public OperationStatusModel deleteUser(@PathVariable String id) {
         OperationStatusModel returnValue = new OperationStatusModel();
         returnValue.setOperationName(RequestOperationName.DELETE.name());
@@ -100,48 +100,7 @@ public class UserController {
         return returnValue;
     }
     //6
-    @GetMapping(path = "/{id}/addresses", produces = {MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_JSON_VALUE, "application/hal+json"})
-    public Resources<AddressesRest> getUserAddresses(@PathVariable String id) {
-
-        List<AddressesRest> returnValues = new ArrayList<>();
-
-        List<AddressDto> addressDtos = addressService.getAddresses(id);
-        if(addressDtos != null && !addressDtos.isEmpty()) {
-            Type type = new TypeToken<List<AddressesRest>>(){}.getType();
-            returnValues = new ModelMapper().map(addressDtos, type);
-
-            for (AddressesRest addressesRest : returnValues) {
-                Link addressLink = linkTo(methodOn(UserController.class).
-                        getUserAddress(id, addressesRest.getAddressId())).withSelfRel();
-                Link userLink = linkTo((methodOn(UserController.class).getUser(id))).withRel("user");
-                addressesRest.add(addressLink);
-                addressesRest.add(userLink);
-            }
-        }
-        return new Resources<>(returnValues);
-    }
-    //7
-    @GetMapping(path = "/{userId}/addresses/{addressId}",
-            produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE, "application/hal+json"})
-    public Resource<AddressesRest> getUserAddress(@PathVariable String userId, @PathVariable String addressId) {
-
-        AddressesRest returnValue = new AddressesRest();
-
-        AddressDto addressDto = addressService.getAddress(addressId);
-        ModelMapper modelMapper = new ModelMapper();
-        Link addressLink = linkTo(methodOn(UserController.class).getUserAddress(userId, addressId)).withSelfRel();
-        Link addressesLink = linkTo(UserController.class).slash(userId).slash("addresses").withRel("address");
-        Link userLink = linkTo(UserController.class).slash(userId).withRel("user");
-        returnValue = modelMapper.map(addressDto, AddressesRest.class);
-        returnValue.add(addressLink);
-        returnValue.add(addressesLink);
-        returnValue.add(userLink);
-        return new Resource<>(returnValue);
-    }
-    //8
-    @GetMapping(path = "/email-verification", produces = { MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE })
+    @GetMapping(path = "/email-verification", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
     public OperationStatusModel verifyEmailToken(@RequestParam(value = "token") String token) {
 
         OperationStatusModel returnValue = new OperationStatusModel();
@@ -156,5 +115,47 @@ public class UserController {
         }
 
         return returnValue;
+    }
+    //7
+    @GetMapping(path = "/{id}/addresses", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/hal+json"})
+    public Resources<AddressesRest> getUserAddresses(@PathVariable String id) {
+
+        List<AddressesRest> addressesRestList = new ArrayList<>();
+
+        List<AddressDto> addressDtos = addressService.getAddresses(id);
+        if(addressDtos != null && !addressDtos.isEmpty()) {
+            Type type = new TypeToken<List<AddressesRest>>(){}.getType();
+            addressesRestList = new ModelMapper().map(addressDtos, type);
+
+            for (AddressesRest addressesRest : addressesRestList) {
+
+                Link addressLink = linkTo(methodOn(UserController.class).getUserAddress(id, addressesRest.getAddressId())).withSelfRel();
+                Link userLink = linkTo((methodOn(UserController.class).getUser(id))).withRel("user");
+
+                addressesRest.add(addressLink);
+                addressesRest.add(userLink);
+            }
+        }
+        return new Resources<>(addressesRestList);
+    }
+    //8
+    @GetMapping(path = "/{userId}/addresses/{addressId}",
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/hal+json"})
+    public Resource<AddressesRest> getUserAddress(@PathVariable String userId, @PathVariable String addressId) {
+
+        AddressesRest returnValue = new AddressesRest();
+
+        AddressDto addressDto = addressService.getAddress(addressId);
+        ModelMapper modelMapper = new ModelMapper();
+
+        Link addressLink = linkTo(methodOn(UserController.class).getUserAddress(userId, addressId)).withSelfRel();
+        Link addressesLink = linkTo(UserController.class).slash(userId).slash("addresses").withRel("addresses");
+        Link userLink = linkTo(UserController.class).slash(userId).withRel("user");
+
+        returnValue = modelMapper.map(addressDto, AddressesRest.class);
+        returnValue.add(addressLink);
+        returnValue.add(addressesLink);
+        returnValue.add(userLink);
+        return new Resource<>(returnValue);
     }
 }

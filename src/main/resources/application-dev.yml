@@ -4,9 +4,8 @@ spring:
     url: jdbc:mysql://localhost:3306/photo_app?useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=true&useSSL=false
     username: pawan
     password: pawan132
-
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
 

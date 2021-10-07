@@ -3,7 +3,6 @@ package com.appsdeveloperblog.app.ws.security;
 import com.appsdeveloperblog.app.ws.SpringApplicationContext;
 import com.appsdeveloperblog.app.ws.model.request.UserLoginRequestModel;
 import com.appsdeveloperblog.app.ws.service.UserService;
-import com.appsdeveloperblog.app.ws.service.impl.UserServiceImpl;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;

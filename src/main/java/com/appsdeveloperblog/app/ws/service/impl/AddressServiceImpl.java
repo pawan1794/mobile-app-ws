@@ -3,20 +3,16 @@ package com.appsdeveloperblog.app.ws.service.impl;
 import com.appsdeveloperblog.app.ws.entity.AddressEntity;
 import com.appsdeveloperblog.app.ws.entity.UserEntity;
 import com.appsdeveloperblog.app.ws.exceptions.UserServiceException;
-import com.appsdeveloperblog.app.ws.model.response.AddressesRest;
 import com.appsdeveloperblog.app.ws.model.response.ErrorMessages;
 import com.appsdeveloperblog.app.ws.repository.AddressRepository;
 import com.appsdeveloperblog.app.ws.repository.UserRepository;
 import com.appsdeveloperblog.app.ws.service.AddressService;
 import com.appsdeveloperblog.app.ws.shared.dto.AddressDto;
-import com.appsdeveloperblog.app.ws.shared.dto.UserDto;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +21,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     AddressRepository addressRepository;
 
