@@ -40,10 +40,11 @@ class UserServiceImplTest {
     @Mock
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    String userId = "12guygu";
-    String addressId = "ad123";
-    String encryptedPassword = "pawan132";
     UserEntity userEntity;
+
+    final String USER_ID = "12guygu";
+    final String ADDRESS_ID = "ad123";
+    final String ENCRYPTED_PASSWORD = "pawan132";
 
     @BeforeEach
     void setUp() throws Exception {
@@ -52,10 +53,10 @@ class UserServiceImplTest {
 
         userEntity = new UserEntity();
         userEntity.setId(1L);
-        userEntity.setUserId(userId);
+        userEntity.setUserId(USER_ID);
         userEntity.setFirstName("Pawan");
         userEntity.setLastName("Vishwakarma");
-        userEntity.setEncryptedPassword(encryptedPassword);
+        userEntity.setEncryptedPassword(ENCRYPTED_PASSWORD);
         userEntity.setAddresses(getAddressesEntity());
     }
 
@@ -96,9 +97,9 @@ class UserServiceImplTest {
     @Test
     final void testCreateUser() {
         when( userRepository.findByEmail( anyString() ) ).thenReturn( null );
-        when(utils.generateAddressId(anyInt())).thenReturn(addressId);
-        when(utils.generateUserId(anyInt())).thenReturn(userId);
-        when(bCryptPasswordEncoder.encode(anyString())).thenReturn(encryptedPassword);
+        when(utils.generateAddressId(anyInt())).thenReturn(ADDRESS_ID);
+        when(utils.generateUserId(anyInt())).thenReturn(USER_ID);
+        when(bCryptPasswordEncoder.encode(anyString())).thenReturn(ENCRYPTED_PASSWORD);
         when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
 
         UserDto userDto = new UserDto();
