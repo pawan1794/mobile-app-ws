@@ -40,7 +40,9 @@ public class Utils {
         boolean returnValue = false;
 
         try {
-            Claims claims = Jwts.parser().setSigningKey(SecurityConstants.getTokenSecret()).parseClaimsJws(token)
+            Claims claims = Jwts.parser()
+                    .setSigningKey(SecurityConstants.getTokenSecret())
+                    .parseClaimsJws(token)
                     .getBody();
 
             Date tokenExpirationDate = claims.getExpiration();
