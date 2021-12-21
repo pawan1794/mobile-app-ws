@@ -41,8 +41,23 @@ public class UtilsTest {
     }
 
     @Test
-    @Disabled
+//    @Disabled
+    final void testHasTokenNotExpired() {
+
+        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXdhbkBlYXN5b3BzLmluIiwiZXhwIjoxNjQwOTYxODYzfQ.Zkj_xu45M_1dQAYs94ObclIusT2XvcAQgEd2t3TY1EZhzOdOrSRivVnOBMk904MQJk_C8OmhcgXgBjGcBYz8fw";
+        String token2 = utils.generateEmailVerificationToken("chdkl");
+        assertNotNull(token2);
+        boolean hasTokenExpired = Utils.hasTokenExpired(token2);
+        assertFalse(hasTokenExpired);
+    }
+
+
+    @Test
+//    @Disabled
     final void testHasTokenExpired() {
 
+        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXdhbkBlYXN5b3BzLmluIiwiZXhwIjoxNjMyOTE0NzI2fQ.PjVRXwWeO9-PrC9nUd_6o4-pvtosVPyiFCPkB-jzoOBKAWqA49y6dvp3Pkv-EO5Agfn4HQMsJha8z_oIYaKBRw";
+        boolean hasTokenExpired = Utils.hasTokenExpired(token);
+        assertTrue(hasTokenExpired);
     }
 }

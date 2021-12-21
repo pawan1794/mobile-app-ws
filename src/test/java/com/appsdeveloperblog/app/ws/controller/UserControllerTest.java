@@ -49,11 +49,11 @@ public class UserControllerTest {
         when(userService.getUserByUserId(anyString())).thenReturn(userDto);
 
         UserRest userRest = userController.getUser(USER_ID);
-        System.out.println(userRest);
+        System.out.println(userRest.getUserId());
         assertNotNull(userRest);
         assertEquals(USER_ID, userRest.getUserId());
         assertEquals(userDto.getFirstName(), userRest.getFirstName());
-        assertEquals(userDto.getAddresses().size(), userRest.getAddresses().size());
+        assertTrue(userDto.getAddresses().size() == userRest.getAddresses().size());
     }
 
     private List<AddressDto> getAddressesDto() {
