@@ -6,6 +6,9 @@ spring:
     show-sql: false
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
   h2:
     console:
       enabled: true
@@ -14,5 +17,15 @@ server:
   servlet:
     context-path: /mobile-app-ws
   port: 5555
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
 
 tokenSecret: jf9i4jgu83nfl0
