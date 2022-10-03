@@ -15,3 +15,4 @@ server:
   port: 5555
 
 tokenSecret: jf9i4jgu83nfl0
+userController.authorizationHeader.description: Bearer JWT Token

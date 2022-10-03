@@ -7,6 +7,9 @@ import com.appsdeveloperblog.app.ws.service.AddressService;
 import com.appsdeveloperblog.app.ws.service.UserService;
 import com.appsdeveloperblog.app.ws.shared.dto.AddressDto;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDto;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
@@ -38,6 +41,9 @@ public class UserController {
     RestTemplate restTemplate;
 
     //1
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header")
+    })
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "1") int page,
                                    @RequestParam(value = "limit", defaultValue = "25") int limit) {
@@ -56,6 +62,11 @@ public class UserController {
         return returnValues;
     }
     //2
+    @ApiOperation(value = "The Get User Details",
+    notes = "Will returned user data.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header")
+    })
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public UserRest getUser(@PathVariable String id) {
 
@@ -83,6 +94,9 @@ public class UserController {
         return returnValue;
     }
     //4
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header")
+    })
     @PutMapping(path = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public UserRest updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) throws Exception {
@@ -95,6 +109,9 @@ public class UserController {
         return returnValue;
     }
     //5
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header")
+    })
     @DeleteMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public OperationStatusModel deleteUser(@PathVariable String id) {
         OperationStatusModel returnValue = new OperationStatusModel();
@@ -120,7 +137,11 @@ public class UserController {
 
         return returnValue;
     }
+
     //7
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header")
+    })
     @GetMapping(path = "/{id}/addresses", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/hal+json"})
     public Resources<AddressesRest> getUserAddresses(@PathVariable String id) {
 
@@ -143,6 +164,9 @@ public class UserController {
         return new Resources<>(addressesRestList);
     }
     //8
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header")
+    })
     @GetMapping(path = "/{userId}/addresses/{addressId}",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/hal+json"})
     public Resource<AddressesRest> getUserAddress(@PathVariable String userId, @PathVariable String addressId) {
