@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
  * Created by Pawan on 02/10/22
  */
 @Repository
-public interface AuthorityRepository extends CrudRepository<AuthorityEntity, Long> {
+public interface
+
+AuthorityRepository extends CrudRepository<AuthorityEntity, Long> {
 
     AuthorityEntity findAllByName(String name);
 }
