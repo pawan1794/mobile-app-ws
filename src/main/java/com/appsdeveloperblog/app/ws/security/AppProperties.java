@@ -15,5 +15,4 @@ public class AppProperties {
         System.out.println("AppProperties getTokenSecret");
         return env.getProperty("tokenSecret");
     }
-
 }

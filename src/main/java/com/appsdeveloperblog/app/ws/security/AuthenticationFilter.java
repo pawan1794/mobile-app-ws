@@ -50,7 +50,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         System.out.println("AuthenticationFilter successfulAuthentication");
-        String username = ((User)authResult.getPrincipal()).getUsername();
+        String username = ((UserPrincipal)authResult.getPrincipal()).getUsername();
 
         String token = Jwts.builder()
                 .setSubject(username)
@@ -60,6 +60,20 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
         UserDto userDto = userService.getUser(username);
+
+        System.out.println(userDto.getRoles());
+        StringBuilder sbRoles = new StringBuilder();
+        sbRoles.append("[");
+
+        userDto.getRoles().forEach(role -> {
+            sbRoles.append("\""+ role +"\"");
+            sbRoles.append(",");
+        });
+
+        if(sbRoles.length() > 1) {
+            sbRoles.deleteCharAt(sbRoles.length()-1);
+        }
+        sbRoles.append("]");
 
         StringBuilder sb = new StringBuilder();
 
@@ -72,6 +86,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         sb.append("\""+SecurityConstants.TOKEN+"\"");
         sb.append(":");
         sb.append("\""+SecurityConstants.TOKEN_PREFIX+token+"\"");
+        sb.append(",");
+        sb.append("\"role\"");
+        sb.append(":");
+        sb.append(sbRoles);
         sb.append(",");
         sb.append("\"expireBy\"");
         sb.append(":");

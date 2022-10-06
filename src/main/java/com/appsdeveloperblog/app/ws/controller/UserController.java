@@ -5,6 +5,7 @@ import com.appsdeveloperblog.app.ws.model.request.UserDetailsRequestModel;
 import com.appsdeveloperblog.app.ws.model.response.*;
 import com.appsdeveloperblog.app.ws.service.AddressService;
 import com.appsdeveloperblog.app.ws.service.UserService;
+import com.appsdeveloperblog.app.ws.shared.Roles;
 import com.appsdeveloperblog.app.ws.shared.dto.AddressDto;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDto;
 import io.swagger.annotations.ApiImplicitParam;
@@ -19,6 +20,9 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,6 +31,8 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -62,6 +68,7 @@ public class UserController {
         return returnValues;
     }
     //2
+    @PostAuthorize("hasRole('ROLE_ADMIN') or returnObject.userId == principal.userId")
     @ApiOperation(value = "The Get User Details",
     notes = "Will returned user data.")
     @ApiImplicitParams({
@@ -88,6 +95,7 @@ public class UserController {
         // BeanUtils.copyProperties(userDetails, userDto);
         ModelMapper modelMapper = new ModelMapper();
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
+        userDto.setRoles(new HashSet<>(Arrays.asList(Roles.ROLE_USER.name())));
         UserDto createdUser = userService.createUser(userDto);
         returnValue = modelMapper.map(createdUser, UserRest.class);
 
@@ -109,11 +117,16 @@ public class UserController {
         return returnValue;
     }
     //5
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
+//    @PreAuthorize("hasAuthority('DELETE_AUTHORITY')")
+//    @PostAuthorize()
+//    @Secured("ROLE_ADMIN")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "authorization", value = "${userController.authorizationHeader.description}", paramType = "header")
     })
     @DeleteMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public OperationStatusModel deleteUser(@PathVariable String id) {
+        System.out.println("calling delete...");
         OperationStatusModel returnValue = new OperationStatusModel();
         returnValue.setOperationName(RequestOperationName.DELETE.name());
         userService.deleteUser(id);
