@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %m%n</Property>
+        <Property name="APP_LOG_ROOT">c:/temp</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+        </Console>
+        <RollingFile name="appLog"
+                     fileName="${APP_LOG_ROOT}/SpringBoot2App/application.log"
+                     filePattern="${APP_LOG_ROOT}/SpringBoot2App/application-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="1" />
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.howtodoinjava.app" additivity="false">
+            <AppenderRef ref="appLog" />
+            <AppenderRef ref="Console" />
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="appLog" />
+        </Root>
+    </Loggers><configuration debug="true">
+    <Properties>
+        <Property name="LOG_PATH">logs</Property>
+        <Property name="LOG_PATTEREN">%d{dd/MM/yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{35}.%M\(%line\) - %msg%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTEREN}"/>
+        </Console>
+
+        <RollingFile name="FILE" fileName="${LOG_PATH}/cmsapi.log"  append="true"
+                     filePattern="${LOG_PATH}/cmsapi-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTEREN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="16MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="ERROR_FILE" fileName="${LOG_PATH}/cmsapi_error.log" append="true"
+                     filePattern="${LOG_PATH}/cmsapi_error-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTEREN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="16MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+
+        <logger name="org.hibernate" level="INFO" />
+        <logger name="org.apache" level="ERROR" />
+        <logger name="org.springframework" level="ERROR" />
+
+        <!-- need this info on startup -->
+        <logger name="org.springframework.web" level="INFO" />
+
+        <!-- configuration -->
+        <logger name="org.springframework.beans.factory.xml" level="INFO" />
+        <logger name="org.springframework.beans.factory.config" level="INFO" />
+
+        <logger name="com.api" level="INFO" />
+
+        <root level="ALL">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+            <AppenderRef ref="ERROR_FILE" level="ERROR"/>
+        </root>
+    </Loggers>
+
+</configuration
+</Configuration>
+
+
+<!--<configuration debug="true">-->
+<!--    <Properties>-->
+<!--        <Property name="LOG_PATH">logs</Property>-->
+<!--        <Property name="LOG_PATTEREN">%d{dd/MM/yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{35}.%M\(%line\) - %msg%n</Property>-->
+<!--    </Properties>-->
+<!--    <Appenders>-->
+<!--        <Console name="CONSOLE" target="SYSTEM_OUT">-->
+<!--            <PatternLayout pattern="${LOG_PATTEREN}"/>-->
+<!--        </Console>-->
+
+<!--        <RollingFile name="FILE" fileName="${LOG_PATH}/cmsapi.log"  append="true"-->
+<!--                     filePattern="${LOG_PATH}/cmsapi-%d{yyyy-MM-dd}-%i.log">-->
+<!--            <PatternLayout pattern="${LOG_PATTEREN}"/>-->
+<!--            <Policies>-->
+<!--                <SizeBasedTriggeringPolicy size="16MB"/>-->
+<!--                <TimeBasedTriggeringPolicy/>-->
+<!--            </Policies>-->
+<!--        </RollingFile>-->
+<!--        <RollingFile name="ERROR_FILE" fileName="${LOG_PATH}/cmsapi_error.log" append="true"-->
+<!--                     filePattern="${LOG_PATH}/cmsapi_error-%d{yyyy-MM-dd}-%i.log">-->
+<!--            <PatternLayout pattern="${LOG_PATTEREN}"/>-->
+<!--            <Policies>-->
+<!--                <SizeBasedTriggeringPolicy size="16MB"/>-->
+<!--            </Policies>-->
+<!--        </RollingFile>-->
+<!--    </Appenders>-->
+<!--    <Loggers>-->
+
+<!--        <logger name="org.hibernate" level="INFO" />-->
+<!--        <logger name="org.apache" level="ERROR" />-->
+<!--        <logger name="org.springframework" level="ERROR" />-->
+
+<!--        &lt;!&ndash; need this info on startup &ndash;&gt;-->
+<!--        <logger name="org.springframework.web" level="INFO" />-->
+
+<!--        &lt;!&ndash; configuration &ndash;&gt;-->
+<!--        <logger name="org.springframework.beans.factory.xml" level="INFO" />-->
+<!--        <logger name="org.springframework.beans.factory.config" level="INFO" />-->
+
+<!--        <logger name="com.api" level="INFO" />-->
+
+<!--        <root level="ALL">-->
+<!--            <AppenderRef ref="CONSOLE"/>-->
+<!--            <AppenderRef ref="FILE"/>-->
+<!--            <AppenderRef ref="ERROR_FILE" level="ERROR"/>-->
+<!--        </root>-->
+<!--    </Loggers>-->
+
+<!--</configuration>-->

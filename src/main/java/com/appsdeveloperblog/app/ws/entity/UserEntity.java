@@ -34,7 +34,7 @@ public class UserEntity implements Serializable {
 //    private Boolean emailVerificationStatus; or
 
     @Column(nullable = false)
-    private Boolean emailVerificationStatus = true;
+    private Boolean emailVerificationStatus = false;
 
     @OneToMany(mappedBy = "userDetails", cascade = CascadeType.ALL)
     private List<AddressEntity> addresses;

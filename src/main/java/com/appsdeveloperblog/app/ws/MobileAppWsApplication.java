@@ -1,6 +1,8 @@
 package com.appsdeveloperblog.app.ws;
 
 import com.appsdeveloperblog.app.ws.security.AppProperties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -12,9 +14,11 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 public class MobileAppWsApplication extends SpringBootServletInitializer {
 
+	private static final Logger logger = LogManager.getLogger(MobileAppWsApplication.class);
+
 	public static void main(String[] args) {
 		SpringApplication.run(MobileAppWsApplication.class, args);
-		System.out.println("Mmobile-app-ws started on port : " + 5555);
+		logger.info("mobile-app-ws started on port : " + 5555);
 	}
 
 	@Override

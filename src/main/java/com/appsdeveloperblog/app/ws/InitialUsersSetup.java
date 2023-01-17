@@ -49,12 +49,13 @@ public class InitialUsersSetup {
         RoleEntity roleAdmin = createRole(Roles.ROLE_ADMIN.name(), Arrays.asList(readAuthority, writeAuthority, deleteAuthority));
 
         if(roleAdmin != null) {
-            UserEntity adminUser = userRepository.findByEmail("admin@gmail.com");
+            UserEntity adminUser = userRepository.findByEmail("pawan1794@gmail.com");
             if(adminUser == null) {
                 adminUser = new UserEntity();
-                adminUser.setFirstName("ADMIN");
-                adminUser.setLastName("USER");
-                adminUser.setEmail("admin@gmail.com");
+                adminUser.setFirstName("Pawan");
+                adminUser.setLastName("Vishwakarma");
+                adminUser.setEmail("pawan1794@gmail.com");
+                adminUser.setEmailVerificationStatus(true);
                 adminUser.setUserId(utils.generateUserId(30));
                 adminUser.setEncryptedPassword(bCryptPasswordEncoder.encode("pawan132"));
                 adminUser.setRoles(Arrays.asList(roleAdmin));
