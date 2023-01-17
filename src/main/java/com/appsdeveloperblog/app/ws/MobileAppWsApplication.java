@@ -14,7 +14,7 @@ public class MobileAppWsApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MobileAppWsApplication.class, args);
-		System.out.println("mobile-app-ws started on port : " + 5555);
+		System.out.println("Mmobile-app-ws started on port : " + 5555);
 	}
 
 	@Override
