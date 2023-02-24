@@ -1,4 +1,4 @@
-package com.appsdeveloperblog.app.ws;
+package com.appsdeveloperblog.app.ws.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

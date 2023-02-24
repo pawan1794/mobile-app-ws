@@ -36,6 +36,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/test/**").permitAll()
                 .antMatchers(SecurityConstants.H2_CONSOLE).permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
 //                .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
